@@ -14,6 +14,6 @@ public class Borrow {
     private int id;
     private int bookId;
     private int studentId;
-    private LocalDate borrowDate;
+    private LocalDate borrowDate; // SQL Date 형식
     private LocalDate returnDate;
 }
