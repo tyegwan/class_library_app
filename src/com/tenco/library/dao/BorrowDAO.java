@@ -124,6 +124,7 @@ public class BorrowDAO {
     // 도서 반납 처리
     // 대출 기록 확인 --> return_date 업데이트 --> Book 도서 상태 업데이트
     // 트랜 잭션 처리
+
     /**
      * @param bookId
      * @param studentId : student 테이블 pk
@@ -137,18 +138,18 @@ public class BorrowDAO {
 
             // 1.
             String checkSql = """
-                SELECT id FROM borrows 
-                WHERE book_id = ? 
-                    AND student_id = ? 
-                    AND return_date IS NULL
-                """;
+                    SELECT id FROM borrows 
+                    WHERE book_id = ? 
+                        AND student_id = ? 
+                        AND return_date IS NULL
+                    """;
             int borrowId;
-            try(PreparedStatement checkPstmt = conn.prepareStatement(checkSql)) {
+            try (PreparedStatement checkPstmt = conn.prepareStatement(checkSql)) {
                 checkPstmt.setInt(1, bookId);
                 checkPstmt.setInt(2, studentId);
 
-                try(ResultSet rs = checkPstmt.executeQuery()) {
-                    if(rs.next() == false) {
+                try (ResultSet rs = checkPstmt.executeQuery()) {
+                    if (rs.next() == false) {
                         throw new SQLException("해당 대출 기록이 없거나 이미 반납 되었습니다");
                     }
                     // 대출 테이블에 해당하는 PK 추출
@@ -160,7 +161,7 @@ public class BorrowDAO {
             String updateBorrowSql = """
                     UPDATE borrows SET return_date = ? WHERE id = ?
                     """;
-            try(PreparedStatement updateBorrowPstmt = conn.prepareStatement(updateBorrowSql)) {
+            try (PreparedStatement updateBorrowPstmt = conn.prepareStatement(updateBorrowSql)) {
                 updateBorrowPstmt.setDate(1, Date.valueOf(LocalDate.now()));
                 updateBorrowPstmt.setInt(2, borrowId);
                 updateBorrowPstmt.executeUpdate();
@@ -170,7 +171,7 @@ public class BorrowDAO {
             String updateBookSql = """
                     UPDATE books SET available = TRUE WHERE id = ?
                     """;
-            try(PreparedStatement updateBookPstmt = conn.prepareStatement(updateBookSql)) {
+            try (PreparedStatement updateBookPstmt = conn.prepareStatement(updateBookSql)) {
                 updateBookPstmt.setInt(1, bookId);
                 updateBookPstmt.executeUpdate();
             }
@@ -179,42 +180,22 @@ public class BorrowDAO {
             conn.commit();
 
         } catch (SQLException e) {
-            if(conn != null) {
+            if (conn != null) {
                 conn.rollback();
             }
             System.out.println("오류 발생 : " + e.getMessage());
-        }finally {
-            if(conn != null) {
+        } finally {
+            if (conn != null) {
                 conn.setAutoCommit(true);
                 conn.close();
             }
         }
-
-        // 1. 대출 기록 확인 - 대출 테이블에 ID 값을 찾을 수 있다
-
-        // 2. 반납일 기록
-
-        // 3. 도서 상태 변경
-
-        // 트랜 잭션 종료 (commit, rollback)
-
     }
 
 
     // 테스트 코드 작성
     public static void main(String[] args) {
-        // 샘플 데이터 - 20230001
-        BorrowDAO borrowDAO = new BorrowDAO();
-        try {
-            // borrowDAO.borrowBook(1, 1);
-            // java.util.List<Borrow> borrowList = borrowDAO.getBorrowedBooks();
-            // System.out.println(borrowList);
-            borrowDAO.returnBook(1, 1);
 
-        } catch (SQLException e) {
-            System.out.println("-----------------------");
-            System.out.println("오류 발생 : " + e.getMessage());
-        }
     }
 
 }
