@@ -2,6 +2,8 @@ package com.tenco.library.dto;
 
 import lombok.*;
 
+
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,10 +15,9 @@ public class Student {
     private String name;
     private String studentId;
 
-    @Builder
-    public  Student(String name,String studentId) {
+    public Student( String name, String studentId) {
+
         this.name = name;
         this.studentId = studentId;
-
     }
 }

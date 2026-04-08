@@ -4,6 +4,7 @@ import com.tenco.library.dao.BookDAO;
 import com.tenco.library.dao.BorrowDAO;
 import com.tenco.library.dao.StudentDAO;
 import com.tenco.library.dto.Book;
+import com.tenco.library.dto.Borrow;
 import com.tenco.library.dto.Student;
 
 import java.sql.SQLException;
@@ -55,7 +56,7 @@ public class LibraryService {
     }
 
     // 전체 학생 목록 조회
-    public List<Student> getAllStudent() throws SQLException{
+    public List<Student> getAllStudents() throws SQLException{
         return studentDAO.getAllStudents();
     }
 
@@ -105,5 +106,10 @@ public class LibraryService {
     }
 
     // TO 관리자 기능 추가 예정
+
+    // 현대 대출중인 목록 조회
+    public List<Borrow> getBorrowedBooks () throws SQLException{
+        return borrowDAO.getBorrowedBooks();
+    }
 
 }

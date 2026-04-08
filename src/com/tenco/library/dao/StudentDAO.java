@@ -43,6 +43,7 @@ public class StudentDAO {
 
             while (rs.next()) {
                 studentList.add(mapToStudent(rs));
+
             }
         }
         return studentList;
@@ -63,6 +64,8 @@ public class StudentDAO {
 
                     return mapToStudent(rs);
                 }
+            } catch (Exception e){
+                e.printStackTrace();
             }
         }
         return null;
@@ -70,36 +73,13 @@ public class StudentDAO {
 
     // ResultSet -> Student 변환 메소드
     private Student mapToStudent(ResultSet rs) throws  SQLException {
-//        Student student = new Student();
-//        student.setId(rs.getInt("id"));
-//        student.setName(rs.getString("name"));
-//        student.setStudentId(rs.getString("student_id"));
-//        return student;
-
         return Student.builder()
-                .id(rs.getInt(rs.getInt("id")))
+                .id(rs.getInt("id"))
                 .name(rs.getString("name"))
-                .studentId(rs.getString("student"))
+                .studentId(rs.getString("student_id"))
                 .build();
     }
 
-    //테스트 코드
-    public static void main(String[] args) throws SQLException {
-        new Student("이길동", "12345");
 
-        Student student = Student
-                .builder()
-                .studentId("20202020")
-                .name("고길동")
-                .build();
-
-        StudentDAO studentDAO = new StudentDAO();
-
-        //studentDAO.addStudent(student);
-
-//        System.out.println(studentDAO.getAllStudents().toString());
-        Student resultStudent = studentDAO.authenticateStudent("20230001");
-        System.out.println(resultStudent);
-    }
 
 }
