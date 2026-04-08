@@ -107,8 +107,17 @@ public class LibraryView2 {
         }
     }
 
-    // 8
-    private void returnBook() {
+    // 8 도서반납
+    private void returnBook() throws SQLException {
+        if (currentStudentId == null) {
+            System.out.println("먼저 로그인해주세요. (메뉴 9번)");
+            return;
+        }
+        int bookId = readInt("반납할 도서 ID: ");
+        if (bookId <= 0) { System.out.println("유효한 도서 ID 를 입력하세요."); return; }
+
+        service.returnBook(bookId, currentStudentId);
+        System.out.println("반납이 완료되었습니다.");
     }
 
     // 7 대출 중인 도서
@@ -119,17 +128,17 @@ public class LibraryView2 {
 //        private int studentId;
 //        private LocalDate borrowDate; // SQL Date 형식
 //        private LocalDate returnDate;
-        List<Borrow> borrowList = service.getBorrowedBooks();
-        if() {
-            for (Borrow b : borrowList) {
-                System.out.printf("id :%2d | BookId : %d | borrowdate : %s | studentId : %d | returndate %s",
-                        b.getId(),
-                        b.getBookId(),
-                        b.getBorrowDate(),
-                        b.getStudentId(),
-                        b.getReturnDate());
-            }
-        }
+//        List<Borrow> borrowList = service.getBorrowedBooks();
+//        if() {
+//            for (Borrow b : borrowList) {
+//                System.out.printf("id :%2d | BookId : %d | borrowdate : %s | studentId : %d | returndate %s",
+//                        b.getId(),
+//                        b.getBookId(),
+//                        b.getBorrowDate(),
+//                        b.getStudentId(),
+//                        b.getReturnDate());
+//            }
+//        }
 
     }
 //         System.out.printf("ID: %2d | NAME : %-20s | 학번: %20s",
